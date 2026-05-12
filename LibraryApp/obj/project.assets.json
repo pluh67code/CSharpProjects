@@ -14,9 +14,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\silas\\source\\repos\\C#\\LibraryApp\\LibraryApp.csproj",
-      "projectName": "LibraryApp",
-      "projectPath": "C:\\Users\\silas\\source\\repos\\C#\\LibraryApp\\LibraryApp.csproj",
+      "projectUniqueName": "C:\\Users\\silas\\source\\repos\\C#\\LibraryApp\\FileSystem.csproj",
+      "projectName": "FileSystem",
+      "projectPath": "C:\\Users\\silas\\source\\repos\\C#\\LibraryApp\\FileSystem.csproj",
       "packagesPath": "C:\\Users\\silas\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\silas\\source\\repos\\C#\\LibraryApp\\obj\\",
       "projectStyle": "PackageReference",
