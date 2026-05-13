@@ -6,21 +6,25 @@ public class WorkoutsMenu {
         bool exited = false;
 
         while (!exited) {
-            foreach (var (workoutID, workoutObj) in workoutsRepo.WorkoutsDict) {
-                Console.WriteLine($"{workoutID}| {workoutObj.ToString()}");
-            }
+            Console.WriteLine("--------------------------");
+            Console.WriteLine("---- Current Workouts ----");
+            //foreach (var (workoutID, workoutObj) in workoutsRepo.WorkoutsDict) {
+            //    Console.WriteLine($"{workoutID}| {workoutObj.ToString()}");
+            //}
+            Console.WriteLine("---- Workouts Menu ----");
             Console.WriteLine("1: Make Workout");
             Console.WriteLine("2: Delete Workout");
             Console.WriteLine("3: Log Workout For Now");
             Console.WriteLine("4: Exit Menu");
+            Console.WriteLine("-----------------------");
             string userStringInput = Console.ReadLine();
             if (int.TryParse(userStringInput, out int userInput) && userInput >= 1 && userInput <= 4) {
                 switch (userInput) {
                     case 1:
-                        MakeWorkout();
+                        MakeWorkout(workoutsRepo);
                         break;
                     case 2:
-                        DeleteWorkout();
+                        DeleteWorkout(workoutsRepo);
                         break;
                     case 3:
                         LogWorkout();
@@ -36,17 +40,32 @@ public class WorkoutsMenu {
         }
     }
 
-    private void MakeWorkout() {
+    private void MakeWorkout(WorkoutsRepository workoutsRepo) {
         Console.WriteLine("Enter a workout ID for this new workout:");
+        string newID = Console.ReadLine();
+        foreach (string workoutID in workoutsRepo.WorkoutIDs) {
+            if (newID == workoutID) {
+                Console.WriteLine($"ID: {newID} already in use!");
+                return;
+            }
+        }
+        Console.WriteLine($"Made new workout with ID: {newID}");
+        // add exercises, make exercises repo and class, it has name and changeable reps and sets per object
     }
 
-    private void DeleteWorkout() {
+    private void DeleteWorkout(WorkoutsRepository workoutsRepo) {
         Console.WriteLine("Enter the workout ID corresponding to the workout you want to delete:");
+        string ID = Console.ReadLine();
+        foreach (string workoutID in workoutsRepo.WorkoutIDs) {
+            if (workoutID == ID) {
+                workoutsRepo.WorkoutIDs.Remove(ID);
+            }
+        }
     }
 
     private void LogWorkout() {
         Console.WriteLine("Enter the workout ID corresponding to the workout you would like to log:");
-
+        Console.WriteLine("hi");
     }
 }
 public class LoggedWorkoutsMenu {
@@ -86,12 +105,14 @@ public class GymApp {
     private PersonalProfileMenu personalProfileMenu = new();
     public void Start() {
         while (!_exited) {
-            Console.WriteLine("==== Gym App ====");
+            Console.WriteLine("-----------------");
+            Console.WriteLine("---- Gym App ----");
             Console.WriteLine("1: Workouts");
             Console.WriteLine("2: Logged Workouts");
             Console.WriteLine("3: PRs");
             Console.WriteLine("4: Personal Profile");
             Console.WriteLine("5: Exit App");
+            Console.WriteLine("------------------");
             string userInputString = Console.ReadLine();
             if (int.TryParse(userInputString, out int userInput) && userInput <= 5 && userInput >= 1) {
                 switch (userInput) {
@@ -128,11 +149,11 @@ public class Workout {
 }
 public class WorkoutsRepository : DataHandler {
     public override string FilePath { get; init; }
-    public List<string> WorkoutIDs { get; private set; }
+    public List<string> WorkoutIDs { get; private set; } = new List<string>();
     public Dictionary<string, Workout> WorkoutsDict { get; private set; }
     public WorkoutsRepository(string filePath) {
         FilePath = filePath;
-        this.Load();
+        Load();
     }
 
     public override void Save() {
