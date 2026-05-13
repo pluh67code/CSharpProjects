@@ -49,7 +49,12 @@ public class WorkoutsMenu {
                 return;
             }
         }
-        Console.WriteLine($"Made new workout with ID: {newID}");
+        Exercise benchPress = new("Bench Press", 3, 7);
+        var exercises = new List<Exercise> { benchPress };
+        Workout newWorkout = new(newID, exercises);
+
+        Console.WriteLine(newWorkout.ToString());
+
         // print exercises, make exercises repo and class, it has name and changeable reps and sets per object
     }
 
@@ -154,6 +159,10 @@ public class Exercise {
         Sets = sets;
         Reps = reps;
     }
+
+    public override string ToString() {
+        return $"- {Name}: {Sets} x {Reps}";
+    }
 }
 public class Workout {
     public string ID { get; init; }
@@ -161,6 +170,14 @@ public class Workout {
     public Workout(string id, List<Exercise> exercises) {
         ID = id;
         Exercises = exercises;
+    }
+
+    public override string ToString() {
+        string result = $"Workout: {ID}\n";
+        foreach (var exercise in Exercises) {
+            result += exercise.ToString() + "\n";
+        }
+        return result;
     }
 }
 public class WorkoutsRepository : DataHandler {
