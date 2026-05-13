@@ -50,7 +50,7 @@ public class WorkoutsMenu {
             }
         }
         Console.WriteLine($"Made new workout with ID: {newID}");
-        // add exercises, make exercises repo and class, it has name and changeable reps and sets per object
+        // print exercises, make exercises repo and class, it has name and changeable reps and sets per object
     }
 
     private void DeleteWorkout(WorkoutsRepository workoutsRepo) {
@@ -144,8 +144,24 @@ public abstract class DataHandler {
     public abstract void Save();
     public abstract void Load();
 }
-public class Workout {
+public class Exercise {
+    public string Name { get; private set; }
+    public int Sets { get; private set; }
+    public int Reps { get; private set; }
 
+    public Exercise(string name, int sets, int reps) {
+        Name = name;
+        Sets = sets;
+        Reps = reps;
+    }
+}
+public class Workout {
+    public string ID { get; init; }
+    public List<Exercise> Exercises { get; private set; }
+    public Workout(string id, List<Exercise> exercises) {
+        ID = id;
+        Exercises = exercises;
+    }
 }
 public class WorkoutsRepository : DataHandler {
     public override string FilePath { get; init; }
