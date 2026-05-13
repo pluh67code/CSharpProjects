@@ -1,13 +1,77 @@
 ﻿GymApp gymApp = new();
 gymApp.Start();
+
+public class WorkoutsMenu {
+    public void Start(WorkoutsRepository workoutsRepo, LoggedWorkoutsRepository loggedWorkoutsRepo) {
+        bool exited = false;
+
+        while (!exited) {
+            foreach (var (workoutID, workoutObj) in workoutsRepo.WorkoutsDict) {
+                Console.WriteLine($"{workoutID}| {workoutObj.ToString()}");
+            }
+            Console.WriteLine("1: Make Workout");
+            Console.WriteLine("2: Delete Workout");
+            Console.WriteLine("3: Log Workout For Now");
+            Console.WriteLine("4: Exit Menu");
+            string userStringInput = Console.ReadLine();
+            if (int.TryParse(userStringInput, out int userInput) && userInput >= 1 && userInput <= 4) {
+                switch (userInput) {
+                    case 1:
+                        MakeWorkout();
+                        break;
+                    case 2:
+                        DeleteWorkout();
+                        break;
+                    case 3:
+                        LogWorkout();
+                        break;
+                    case 4:
+                        exited = true;
+                        break;
+                }
+            }
+            else {
+                Console.WriteLine("Invalid option");
+            }
+        }
+    }
+
+    private void MakeWorkout() {
+        Console.WriteLine("Enter a workout ID for this new workout:");
+    }
+
+    private void DeleteWorkout() {
+        Console.WriteLine("Enter the workout ID corresponding to the workout you want to delete:");
+    }
+
+    private void LogWorkout() {
+        Console.WriteLine("Enter the workout ID corresponding to the workout you would like to log:");
+
+    }
+}
+public class LoggedWorkoutsMenu {
+    public void Start(LoggedWorkoutsRepository loggedWorkoutsRepo, WorkoutsRepository workoutsRepo) {
+
+    }
+}
+public class PersonalRecordsMenu {
+    public void Start(PersonalRecordsRepository personalRecordsRepo) {
+
+    }
+}
+public class PersonalProfileMenu {
+    public void Start(PersonalProfileRepository personalProfileRepo) {
+
+    }
+}
 public class Repositories {
-    public WorkoutRepository WorkoutsRepo { get; }
+    public WorkoutsRepository WorkoutsRepo { get; }
     public LoggedWorkoutsRepository LoggedWorkoutsRepo { get; }
     public PersonalRecordsRepository PersonalRecordsRepo { get; }
     public PersonalProfileRepository PersonalProfileRepo { get; }
 
     public Repositories(string dataDirectory) {
-        WorkoutsRepo = new WorkoutRepository(dataDirectory + "");
+        WorkoutsRepo = new WorkoutsRepository(dataDirectory + "");
         LoggedWorkoutsRepo = new LoggedWorkoutsRepository(dataDirectory + "");
         PersonalRecordsRepo = new PersonalRecordsRepository(dataDirectory + "");
         PersonalProfileRepo = new PersonalProfileRepository(dataDirectory + "");
@@ -16,6 +80,10 @@ public class Repositories {
 public class GymApp {
     private bool _exited = false;
     private Repositories Repos = new("");
+    private WorkoutsMenu workoutsMenu = new();
+    private LoggedWorkoutsMenu loggedWorkoutsMenu = new();
+    private PersonalRecordsMenu personalRecordsMenu = new();
+    private PersonalProfileMenu personalProfileMenu = new();
     public void Start() {
         while (!_exited) {
             Console.WriteLine("==== Gym App ====");
@@ -28,13 +96,16 @@ public class GymApp {
             if (int.TryParse(userInputString, out int userInput) && userInput <= 5 && userInput >= 1) {
                 switch (userInput) {
                     case 1:
-                        
+                        workoutsMenu.Start(Repos.WorkoutsRepo, Repos.LoggedWorkoutsRepo);
                         break;
                     case 2:
+                        loggedWorkoutsMenu.Start(Repos.LoggedWorkoutsRepo, Repos.WorkoutsRepo);
                         break;
                     case 3:
+                        personalRecordsMenu.Start(Repos.PersonalRecordsRepo);
                         break;
                     case 4:
+                        personalProfileMenu.Start(Repos.PersonalProfileRepo);
                         break;
                     case 5:
                         _exited = true;
@@ -47,18 +118,19 @@ public class GymApp {
         }
     }
 }
-
 public abstract class DataHandler {
     public abstract string FilePath { get; init; }
     public abstract void Save();
     public abstract void Load();
 }
+public class Workout {
 
-public class WorkoutRepository : DataHandler {
+}
+public class WorkoutsRepository : DataHandler {
     public override string FilePath { get; init; }
     public List<string> WorkoutIDs { get; private set; }
-
-    public WorkoutRepository(string filePath) {
+    public Dictionary<string, Workout> WorkoutsDict { get; private set; }
+    public WorkoutsRepository(string filePath) {
         FilePath = filePath;
         this.Load();
     }
