@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="GymApp/GymApp.csproj" Id="8f59ef01-611d-412b-a8a7-d3b3ed6898e9" />
+  <Project Path="TaskManager/TaskManager.csproj" />
 </Solution>
